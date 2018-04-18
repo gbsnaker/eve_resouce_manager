@@ -1,0 +1,19 @@
+{"name": "apps-ingage-web9",
+"version": "hostfix1804",
+"maven_env": "mvn3.3-jdk7",
+"required_dns":["www.baidu.com"],
+"jvmruntime": {
+   "mainclass" : "com.rkhd.apps",
+   "jvm_port" : 9900,
+   "service_port": [8200, 8300],
+  "java_version": "jdk1.8",
+  "java_options": "max125"
+},
+"required_middlewares": [
+	 {"name": "mysql", "decrpitions": "dbtabae", "ports_list": [{ "name": "test", "port": "123"}]}
+],
+"log": [
+	{"name": "stdout.log", "path": "/tmp/"},
+	{"name": "stderr.log", "path": "/tmp/"}
+	]
+}
