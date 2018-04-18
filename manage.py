@@ -5,6 +5,7 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 #sys.path.insert(0, "/path/to/your/package_or_module")
 
+from flask import jsonify, abort
 from flask_script import Manager
 from eve import Eve
 #from eve_swagger import swagger, add_documentation
@@ -53,6 +54,52 @@ app = Eve()
 # }}}})
 
 # configure your app
+def pre_get_callback(resource, request, lookup):
+    print('A GET request on the "%s" endpoint has just been received!' % resource)
+def pre_accounts_get_callback(request, lookup):
+    print('2 A GET request on the accounts endpoint has just been received!')
+
+def pre_accounts_post_callback(request):
+    print('A post request on the accounts endpoint has just been received!')
+    print request.json
+    #data = request.json[0]
+
+    # mail = data.get('mail')
+    # print mail
+    # password = data.get('password')
+    # verify = data.get('verify')
+    # name = data.get('name')
+    #
+    # if password != verify:
+    #     abort(404)
+    tmp_list = []
+    for item in request.json:
+        del item['verify']
+        item['hash_password'] = item['password']
+        del item['password']
+        tmp_list.append(item)
+
+app.on_pre_GET += pre_get_callback
+app.on_pre_GET_accounts += pre_accounts_get_callback
+
+app.on_pre_POST_accounts += pre_accounts_post_callback
+
+# def post_get_callback(resource, request, payload):
+#     print "all get callback"
+#
+#
+# def post_accounts_get_callback(request, payload):
+#     print "account"
+#     print request.json
+#     print payload
+#
+# app.on_post_GET += post_get_callback
+# app.on_post_GET_accounts  += post_accounts_get_callback
+
+
+
+
+
 
 manager = Manager(app)
 

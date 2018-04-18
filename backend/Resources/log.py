@@ -35,6 +35,7 @@ log = {
     'cache_control': 'max-age=10,must-revalidate',
     'cache_expires': 10,
 
+    #'internal_resource': True
     # most global settings can be overridden at resource level
     'resource_methods': ['GET', 'POST'],
 

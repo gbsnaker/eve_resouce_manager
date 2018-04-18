@@ -1,4 +1,6 @@
 # coding: utf-8
+#from flask import current_app as app
+
 
 accounts_schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
@@ -8,7 +10,7 @@ accounts_schema = {
         'minlength': 1,
         'maxlength': 120,
     },
-    'email': {
+    'mail': {
         'type': 'string',
         'minlength': 1,
         'maxlength': 120,
@@ -21,7 +23,6 @@ accounts_schema = {
         'type': 'string',
         'minlength': 1,
         'maxlength': 120,
-        'required': True,
         # talk about hard constraints! For the purpose of the demo
         # 'lastname' is an API entry-point, so we need it to be unique.
     },
@@ -36,7 +37,7 @@ accounts = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
     'item_title': 'accounts',
-
+    'url': 'auth/register',
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform
@@ -55,3 +56,4 @@ accounts = {
 
     'schema': accounts_schema
 }
+
