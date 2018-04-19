@@ -1,6 +1,8 @@
 # coding: utf-8
 #from flask import current_app as app
-
+from passlib.apps import custom_app_context as pwd_context
+from backend.commons.abortext import abort_json
+from backend.commons.common import verify_password, hash_password
 
 accounts_schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
@@ -18,6 +20,10 @@ accounts_schema = {
         # talk about hard constraints! For the purpose of the demo
         # 'lastname' is an API entry-point, so we need it to be unique.
         'unique': True,
+    },
+    'remember': {
+        'type': 'boolean',
+        'default': False
     },
     'hash_password': {
         'type': 'string',
@@ -57,3 +63,22 @@ accounts = {
     'schema': accounts_schema
 }
 
+def pre_accounts_post_callback(request):
+    print('A post request on the accounts endpoint has just been received!')
+    print type(request.json)
+    print request.json
+    mail = request.json.get('mail')
+    password = request.json.get('password')
+    confirm = request.json.get('confirm')
+
+    if not mail or not password or not confirm:
+        abort_json("check your input", 400)
+
+    if password != confirm:
+        abort_json("password must be match!", 500)
+
+    del request.json['confirm']
+    #print hash_password("123")
+
+    request.json['hash_password'] = hash_password(request.json['password'])
+    del request.json['password']

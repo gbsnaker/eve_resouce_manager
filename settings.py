@@ -2,7 +2,7 @@ from backend.Resources.Envs import envs
 from backend.Resources.Items import items
 from backend.Resources.Accounts import accounts
 from backend.Resources.People import people
-from backend.Resources.log import log
+from backend.Resources.login import login
 # Let's just use the local mongod instance. Edit as needed.
 # Please note that MONGO_HOST and MONGO_PORT could very well be left
 # out as they already default to a bare bones local 'mongod' instance.
@@ -49,5 +49,5 @@ DOMAIN = {
         'items': items,
         'accounts': accounts,
         'people': people,
-        # 'log': log
+        #'login': login
         }
