@@ -1,4 +1,7 @@
 
+from backend.auths.allauths import BarrerAuth
+from eve_auth_jwt import JWTAuth
+
 peopleschema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/pyeve/cerberus) for details.
@@ -39,6 +42,7 @@ people = {
     # 'title' tag used in item links. Defaults to the resource title minus
     # the final, plural 's' (works fine in most cases but not for 'people')
     'item_title': 'person',
+    'authentication': JWTAuth,
     #/user
     #'url': 'user',
     #/auth/register
@@ -58,6 +62,10 @@ people = {
 
     # most global settings can be overridden at resource level
     'resource_methods': ['GET', 'POST'],
+
+    'public_methods': ['GET'],
+    'public_item_methods': ['GET'],
+
 
     'schema': peopleschema
 }

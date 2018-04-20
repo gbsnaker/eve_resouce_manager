@@ -3,6 +3,8 @@
 from passlib.apps import custom_app_context as pwd_context
 from backend.commons.abortext import abort_json
 from backend.commons.common import verify_password, hash_password
+from redis import StrictRedis
+from backend.commons.create_token import generate_auth_token
 
 accounts_schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
@@ -82,3 +84,10 @@ def pre_accounts_post_callback(request):
 
     request.json['hash_password'] = hash_password(request.json['password'])
     del request.json['password']
+
+
+    token = generate_auth_token(mail)
+    redis = StrictRedis()
+    redis.set(mail=token)
+
+

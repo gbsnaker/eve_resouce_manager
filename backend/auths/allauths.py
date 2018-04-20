@@ -6,7 +6,49 @@ import hmac
 from eve.auth import TokenAuth
 from eve.auth import HMACAuth
 from flask import current_app as app
+from flask import  request
 from eve.auth import BasicAuth
+from flask import request, make_response
+from redis import StrictRedis
+
+
+
+class BarrerAuth(TokenAuth):
+
+    def __init__(self):
+        super(BarrerAuth, self).__init__()
+        self.redis = StrictRedis()
+
+    def check_auth(self, token, allowed_roles, resource, method):
+        """ Check if API request is authorized.
+            Examines token in header and checks Redis cache to see if token is
+            valid. If so, request is allowed.
+            :param token: OAuth 2.0 access token submitted.
+            :param allowed_roles: Allowed user roles.
+            :param resource: Resource being requested.
+            :param method: HTTP method being executed (POST, GET, etc.)
+        """
+        print request.json
+        print request.headers.get('Authorization')
+
+
+        return token and self.redis.get(token)
+
+    def authorized(self, allowed_roles, resource, method):
+        """ Validates the the current request is allowed to pass through.
+            :param allowed_roles: allowed roles for the current request, can be a
+                                  string or a list of roles.
+            :param resource: resource being requested.
+        """
+
+        try:
+            token = request.headers.get('Authorization').split(" ")[1]
+        except:
+            token = None
+
+        return self.check_auth(token, allowed_roles, resource, method)
+
+
 
 class MyBasicAuth(BasicAuth):
     def check_auth(self, username, password, allowed_roles, resource, method):

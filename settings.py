@@ -3,6 +3,9 @@ from backend.Resources.Items import items
 from backend.Resources.Accounts import accounts
 from backend.Resources.People import people
 from backend.Resources.login import login
+
+
+
 # Let's just use the local mongod instance. Edit as needed.
 # Please note that MONGO_HOST and MONGO_PORT could very well be left
 # out as they already default to a bare bones local 'mongod' instance.
@@ -25,6 +28,10 @@ ESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 ## individual items  (defaults to read-only item access).
 ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 
+# PUBLIC_METHODS = ['GET']
+# PUBLIC_ITEM_METHODS = ['GET']
+
+
 # RENDERERS = [
 #     'eve.render.JSONRenderer',
 #     'eve.render.XMLRenderer'
@@ -42,7 +49,7 @@ ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 #              'http://petstore.swagger.io']
 X_DOMAINS = ['http://127.0.0.1:8888']
 X_HEADERS = ['Content-Type', 'If-Match']  # Needed for the "Try it out" buttons
-
+SECRET_KEY = "123212313131313131313131321"
 
 DOMAIN = {
         'envs': envs,

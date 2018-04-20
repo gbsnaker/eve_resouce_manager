@@ -1,5 +1,7 @@
 import os
 import sys
+from redis import StrictRedis
+
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -8,10 +10,11 @@ sys.setdefaultencoding("utf-8")
 from flask import jsonify, abort, request
 from flask_script import Manager
 from eve import Eve
-from eve.auth import BasicAuth
+from eve.auth import BasicAuth,TokenAuth
 
 from backend.Resources.Accounts import pre_accounts_post_callback
 from backend.Resources.login import pre_login_post_callback
+from backend.commons.create_token import generate_auth_token
 
 from backend.auths.bcryptauth import BCryptAuth,BCryptAuthPost
 from backend.commons.common import hash_password, verify_password
@@ -107,7 +110,7 @@ def login():
 
     accounts = app.data.driver.db['accounts']
     user = accounts.find_one({'mail': username})
-    print user
+    #print user
     if not user:
         status = "error"
         message = "user not exist"
@@ -118,9 +121,16 @@ def login():
         message = "password invalid"
         return jsonify(status=status,messag=message)
 
+
     status = "success"
     message = "login ok"
-    token = ""
+    redis = StrictRedis()
+    token = generate_auth_token(mail=username)
+    print token
+    redis = StrictRedis()
+    redis.set(username,token)
+    token = redis.get(username)
+
     return jsonify(status=status,messag=message, token=token)
 
 
