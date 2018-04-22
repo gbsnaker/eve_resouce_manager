@@ -1,7 +1,7 @@
 import os
 import sys
 from redis import StrictRedis
-
+import jwt
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -125,13 +125,26 @@ def login():
     status = "success"
     message = "login ok"
     redis = StrictRedis()
-    token = generate_auth_token(mail=username)
+    #token = generate_auth_token(mail=username)
+    payload = {
+        "mail": username,
+        "iss": app.config['JWT_ISSUER'],
+        'aud': app.config['JWT_AUDIENCES']
+    }
+
+    token = jwt.encode(payload, key=app.config['JWT_SECRET'])
     print token
     redis = StrictRedis()
     redis.set(username,token)
     token = redis.get(username)
 
-    return jsonify(status=status,messag=message, token=token)
+    # detoken = jwt.decode(token, key=app.config['JWT_SECRET'])
+    # print "decode token"
+    # print detoken
+    out = jsonify(status=status,messag=message,token=token)
+    out.set_cookie('jwttoken',token)
+    #return jsonify(status=status,messag=message, token=token)
+    return out
 
 
 manager = Manager(app)

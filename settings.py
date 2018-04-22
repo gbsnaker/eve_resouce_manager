@@ -49,7 +49,10 @@ ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 #              'http://petstore.swagger.io']
 X_DOMAINS = ['http://127.0.0.1:8888']
 X_HEADERS = ['Content-Type', 'If-Match']  # Needed for the "Try it out" buttons
-SECRET_KEY = "123212313131313131313131321"
+#SECRET_KEY = "123212313131313131313131321"
+JWT_SECRET = "sdfasfasfasfsadfsaf"
+JWT_ISSUER = "longmenkezhai"
+JWT_AUDIENCES= ["longmenkezhai"]
 
 DOMAIN = {
         'envs': envs,

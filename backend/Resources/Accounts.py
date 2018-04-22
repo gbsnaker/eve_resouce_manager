@@ -86,8 +86,10 @@ def pre_accounts_post_callback(request):
     del request.json['password']
 
 
-    token = generate_auth_token(mail)
+    token = generate_auth_token(mail=mail)
+    print token
     redis = StrictRedis()
-    redis.set(mail=token)
+    print mail
+    redis.set(mail,token)
 
 
